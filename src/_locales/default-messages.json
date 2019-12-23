@@ -4,11 +4,7 @@
 		"description": ""
 	},
 	"extensionName": {
-		"message": "SmartProxy",
-		"description": ""
-	},
-	"extensionDescription": {
-		"message": "Smart Proxy will automatically enable/disable proxy for the sites you visit, based on customizable patterns.",
+		"message": "Massbrowser Manager",
 		"description": ""
 	},
 	"toolbarTooltipEffectiveRule": {
@@ -20,7 +16,7 @@
 		"description": ""
 	},
 	"popupTitle": {
-		"message": "SmartProxy Activation",
+		"message": "Massbrowser Activation",
 		"description": ""
 	},
 	"popupNoProxy": {
