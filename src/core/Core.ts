@@ -27,10 +27,10 @@ import { UpdateManager } from "./UpdateManager";
 import { ProxyRules } from "./ProxyRules";
 import { TabRequestLogger } from "./TabRequestLogger";
 import { WebFailedRequestMonitor } from "./WebFailedRequestMonitor";
-import { SubscriptionUpdater } from "./SubscriptionUpdater";
+
 import { Settings } from "./Settings";
 import { Messages, SettingsPageInternalDataType, PopupInternalDataType, ProxyableInternalDataType, ProxyServer, ProxyModeType, ResultHolderGeneric } from "./definitions";
-import { KeyboardShortcuts } from "./KeyboardShortcuts";
+// import { KeyboardShortcuts } from "./KeyboardShortcuts";
 import { ProxyEngineSpecialRequests } from "./ProxyEngineSpecialRequests";
 
 export class Core {
@@ -39,7 +39,7 @@ export class Core {
 	public static initializeApp() {
 
 		// comment for debugging
-		Debug.disable(); 
+		// Debug.disable(); 
 
 		Settings.onInitialized = (() => {
 			// on settings read success
@@ -51,10 +51,10 @@ export class Core {
 			Core.setBrowserActionStatus();
 
 			// update the timers
-			SubscriptionUpdater.updateSubscriptions();
+			
 
 			// check for updates, only in unlisted version
-			UpdateManager.readUpdateInfo();
+			//UpdateManager.readUpdateInfo();
 		});
 		Settings.initialize();
 
@@ -75,7 +75,7 @@ export class Core {
 		ProxyAuthentication.startMonitor();
 
 		// listen to shortcut events
-		KeyboardShortcuts.startMonitor();
+		// KeyboardShortcuts.startMonitor();
 	}
 
 	private static handleMessages(message: any, sender: any, sendResponse: Function) {
@@ -333,7 +333,7 @@ export class Core {
 					SettingsOperation.saveAllSync();
 
 					// update the timers
-					SubscriptionUpdater.updateSubscriptions();
+					
 
 					// it is possible that active proxy is changed
 					ProxyEngine.notifyActiveProxyServerChanged();
@@ -687,29 +687,7 @@ export class Core {
 				});
 				break;
 
-			case ProxyModeType.Always:
-
-				proxyTitle = `${extensionName} : ${browser.i18n.getMessage("popupAlwaysEnable")}`;
-				PolyFill.browserActionSetIcon({
-					path: {
-						16: "icons/proxymode-always-16.png",
-						32: "icons/proxymode-always-32.png",
-						48: "icons/proxymode-always-48.png"
-					}
-				});
-				break;
-
-			case ProxyModeType.SystemProxy:
-
-				proxyTitle = `${extensionName} : ${browser.i18n.getMessage("popupSystemProxy")}`;
-				PolyFill.browserActionSetIcon({
-					path: {
-						16: "icons/proxymode-system-16.png",
-						32: "icons/proxymode-system-32.png",
-						48: "icons/proxymode-system-48.png"
-					}
-				});
-				break;
+		
 
 			case ProxyModeType.SmartProxy:
 			default:

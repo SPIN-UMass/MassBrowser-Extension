@@ -24,8 +24,7 @@ export const specialRequestApplyProxyModeKeys = ["NoProxy", "CurrentProxy"/* , "
 export enum ProxyModeType {
 	Direct,
 	SmartProxy,
-	Always,
-	SystemProxy
+	Tor
 }
 
 export class BrowserProxySettingsType {

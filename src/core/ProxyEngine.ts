@@ -19,13 +19,13 @@ import { ProxyRules } from "./ProxyRules";
 import { Settings } from "./Settings";
 import { ProxyEngineFirefox } from "./ProxyEngineFirefox";
 import { environment } from "../lib/environment";
-import { ProxyEngineChrome } from "./ProxyEngineChrome";
+// import { ProxyEngineChrome } from "./ProxyEngineChrome";
 
 export class ProxyEngine {
 
     public static registerEngine() {
         if (environment.chrome) {
-            this.updateChromeProxyConfig();
+            throw "NOT IMPLEMENTED";
         }
         else {
             ProxyEngineFirefox.register();
@@ -39,7 +39,7 @@ export class ProxyEngine {
 
         // update proxy rules
         this.updateFirefoxProxyConfig();
-        this.updateChromeProxyConfig();
+        // this.updateChromeProxyConfig();
     }
 
     public static notifyProxyModeChanged() {
@@ -48,7 +48,7 @@ export class ProxyEngine {
 
         // update proxy rules
         this.updateFirefoxProxyConfig();
-        this.updateChromeProxyConfig();
+        // this.updateChromeProxyConfig();
     }
 
     public static notifyActiveProxyServerChanged() {
@@ -58,7 +58,7 @@ export class ProxyEngine {
 
         // update proxy rules
         this.updateFirefoxProxyConfig();
-        this.updateChromeProxyConfig();
+        // this.updateChromeProxyConfig();
     }
 
     public static notifyProxyRulesChanged() {
@@ -66,7 +66,7 @@ export class ProxyEngine {
         this.notifyCompileRules();
 
         // update proxy rules
-        this.updateChromeProxyConfig();
+        // this.updateChromeProxyConfig();
         this.updateFirefoxProxyConfig();
     }
 
@@ -79,7 +79,7 @@ export class ProxyEngine {
         ProxyRules.compileRules(Settings.current.proxyRules);
         
         // update proxy rules
-        this.updateChromeProxyConfig();
+        // this.updateChromeProxyConfig();
         this.updateFirefoxProxyConfig();
     }
 
@@ -88,17 +88,17 @@ export class ProxyEngine {
         PacScriptEventDispatcher.notifyBypassChanged();
 
         // update proxy rules
-        this.updateChromeProxyConfig();
+        // this.updateChromeProxyConfig();
         this.updateFirefoxProxyConfig();
     }
 
 
-    public static updateChromeProxyConfig() {
-        if (!environment.chrome)
-            return;
+    // public static updateChromeProxyConfig() {
+    //     if (!environment.chrome)
+    //         return;
 
-        ProxyEngineChrome.updateChromeProxyConfig();
-    }
+    //     ProxyEngineChrome.updateChromeProxyConfig();
+    // }
 
     public static updateFirefoxProxyConfig() {
         if (environment.chrome)

@@ -78,22 +78,20 @@
 			<h6 class="text-muted text-center" data-localize="popupTitle">Massbrowser manager</h6>
 			<div id="divProxyMode" class="nav flex-column nav-pills interactive">
 				<!-- <a href="#" class="nav-link disabled px-5 text-center" data-localize="popupTitle">SmartProxy Activation</a> -->
+
+				<a href="#" data-proxyMode="1" class="nav-link active">
+					<i class="fas fa-magic fa-lg text-success" aria-hidden="true"></i>
+					<span data-localize="popupSmartProxy">MassBrowsing</span>
+				</a>
+				<a href="#" data-proxyMode="2" class="nav-link">
+					<i class="fas fa-globe-americas fa-lg text-primary" aria-hidden="true"></i>
+					<span data-localize="popupTor">Unblock everything</span>
+				</a>
 				<a href="#" data-proxyMode="0" class="nav-link">
 					<i class="fas fa-ban fa-lg text-danger" aria-hidden="true"></i>
 					<span data-localize="popupNoProxy">Direct (No Proxy)</span>
 				</a>
-				<a href="#" data-proxyMode="1" class="nav-link active">
-					<i class="fas fa-magic fa-lg text-success" aria-hidden="true"></i>
-					<span data-localize="popupSmartProxy">Smart Proxy</span>
-				</a>
-				<a href="#" data-proxyMode="2" class="nav-link">
-					<i class="fas fa-globe-americas fa-lg text-primary" aria-hidden="true"></i>
-					<span data-localize="popupAlwaysEnable">Always Enable</span>
-				</a>
-				<a id="linkSystemProxy" href="#" data-proxyMode="3" class="nav-link">
-					<i class="fab fa-windows fa-lg text-primary" aria-hidden="true"></i>
-					<span data-localize="popupSystemProxy">System Proxy</span>
-				</a>
+
 				<!--<div class="dropdown-divider"></div>
 					<a href="#" class="nav-link active">Settings</a>-->
 			</div>
@@ -141,8 +139,7 @@
 								</div>
 								<div class="col-2 text-center p-0 pl-1">
 									<i class="proxyable-status-icon far fa-square fa-lg background-white"></i>
-									<!--<i title="Not enabled" class="far fa-check-square fa-lg" aria-hidden="true"></i>-->
-									<!--<i title="Enabled" class="far fa-check-square fa-lg" aria-hidden="true"></i>-->
+									
 								</div>
 							</div>
 						</a>
@@ -151,10 +148,10 @@
 			</div>
 			<hr class="afshin-line" />
 			<div class="nav flex-column nav-pills interactive">
-				<a href="#" style="display: noneX" id="openProxyable" class="nav-link">
+				<!-- <a href="#" style="display: noneX" id="openProxyable" class="nav-link">
 					<i class="fas fa-search fa-lg text-info" aria-hidden="true"></i>
 					<span data-localize="popupProxyableResources">Proxyable Resources</span>
-				</a>
+				</a> -->
 				<a href="#" id="openSettings" class="nav-link">
 					<i class="fas fa-cog fa-lg text-success" aria-hidden="true"></i>
 					<span data-localize="popupSettings">Settings</span>

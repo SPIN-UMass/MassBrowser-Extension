@@ -580,7 +580,7 @@ export class SettingsOperation {
 			SettingsOperation.saveAllSync();
 
 			// update proxy rules
-			ProxyEngine.updateChromeProxyConfig();
+			// ProxyEngine.updateChromeProxyConfig();
 			ProxyEngine.updateFirefoxProxyConfig();
 
 			return { success: true, message: browser.i18n.getMessage("settingsRestoreSettingsSuccess") }

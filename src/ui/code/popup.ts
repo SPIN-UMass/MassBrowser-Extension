@@ -15,7 +15,7 @@
  * along with SmartProxy.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { browser, environment } from "../../lib/environment";
-import { jQuery, messageBox } from "../../lib/External";
+import { jQuery } from "../../lib/External";
 import { Messages, PopupInternalDataType, ProxyModeType, ProxyableDomainType, FailedRequestType, ProxyServer } from "../../core/definitions";
 import { PolyFill } from "../../lib/PolyFill";
 import { CommonUi } from "./CommonUi";
@@ -350,18 +350,18 @@ export class popup {
         let element = jQuery(this);
         let selectedProxyMode = element.attr("data-proxyMode");
 
-        if (popup.popupData.notAllowedSetProxySettings &&
-            selectedProxyMode == ProxyModeType.SystemProxy) {
+        // if (popup.popupData.notAllowedSetProxySettings &&
+        //     selectedProxyMode == ProxyModeType.SystemProxy) {
 
-            let message: string;
-            if (environment.chrome)
-                message = browser.i18n.getMessage("popupNotAllowedSetProxySettingsChrome");
-            else
-                message = browser.i18n.getMessage("popupNotAllowedSetProxySettingsFirefox");
+        //     let message: string;
+        //     if (environment.chrome)
+        //         message = browser.i18n.getMessage("popupNotAllowedSetProxySettingsChrome");
+        //     else
+        //         message = browser.i18n.getMessage("popupNotAllowedSetProxySettingsFirefox");
 
-            messageBox.error(message, 5000);
-            return;
-        }
+        //     messageBox.error(message, 5000);
+        //     return;
+        // }
 
         // change proxy mode
         PolyFill.runtimeSendMessage({
@@ -369,12 +369,11 @@ export class popup {
             proxyMode: selectedProxyMode
         });
 
-        if (selectedProxyMode != ProxyModeType.Direct &&
-            selectedProxyMode != ProxyModeType.SystemProxy &&
-            !popup.popupData.hasProxyServers) {
-            // open the settings page
-            PolyFill.runtimeOpenOptionsPage();
-        }
+        // if (selectedProxyMode != ProxyModeType.Direct &&
+        //     !popup.popupData.hasProxyServers) {
+        //     // open the settings page
+        //     PolyFill.runtimeOpenOptionsPage();
+        // }
         popup.closeSelf();
     }
 

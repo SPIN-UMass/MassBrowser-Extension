@@ -16,23 +16,23 @@
 		"description": ""
 	},
 	"popupTitle": {
-		"message": "Massbrowser Activation",
+		"message": "Massbrowser Manager",
 		"description": ""
 	},
 	"popupNoProxy": {
-		"message": "Direct (No Proxy)",
+		"message": "Disable",
 		"description": ""
 	},
 	"popupSmartProxy": {
-		"message": "Smart Proxy",
+		"message": "MassBrowsing",
 		"description": ""
 	},
-	"popupAlwaysEnable": {
-		"message": "Always Enable",
+	"popupTorTab": {
+		"message": "Unblock this website",
 		"description": ""
 	},
-	"popupSystemProxy": {
-		"message": "System Proxy",
+	"popupTor": {
+		"message": "Unblock everything",
 		"description": ""
 	},
 	"popupActiveProxy": {

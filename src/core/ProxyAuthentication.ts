@@ -54,8 +54,7 @@ export class ProxyAuthentication {
 		}
 		let settings = Settings.current;
 
-		let applyAuthentication = (settings.proxyMode !== ProxyModeType.Direct) &&
-			(settings.proxyMode !== ProxyModeType.SystemProxy);
+		let applyAuthentication = (settings.proxyMode !== ProxyModeType.Direct) ;
 
 		let activeProxy = settings.activeProxyServer;
 
@@ -122,8 +121,7 @@ export class ProxyAuthentication {
 		}
 		let settings = Settings.current;
 
-		let applyAuthentication = (settings.proxyMode !== ProxyModeType.Direct) &&
-			(settings.proxyMode !== ProxyModeType.SystemProxy);
+		let applyAuthentication = (settings.proxyMode !== ProxyModeType.Direct) ;
 
 		// check if authentication is already provided
 		if (ProxyAuthentication.pendingRequests[requestDetails.requestId]) {

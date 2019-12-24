@@ -16,12 +16,12 @@
  */
 import { browser, environment } from "../lib/environment";
 import { Debug } from "../lib/Debug";
-import { ProxyModeType, BrowserProxySettingsType, ProxyRule, ProxyServer, SpecialRequestApplyProxyMode } from "./definitions";
-import { ProxyRules } from "./ProxyRules";
+import { ProxyModeType, BrowserProxySettingsType} from "./definitions"; //, ProxyRule, ProxyServer, SpecialRequestApplyProxyMode 
+//import { ProxyRules } from "./ProxyRules";
 import { TabManager } from "./TabManager";
 import { PolyFill } from "../lib/PolyFill";
 import { Settings } from "./Settings";
-import { ProxyEngineSpecialRequests } from "./ProxyEngineSpecialRequests";
+//import { ProxyEngineSpecialRequests } from "./ProxyEngineSpecialRequests";
 
 export class ProxyEngineFirefox {
 	private static proxyScriptUrlFirefox = "core-engine-ff-pac.js";
@@ -48,21 +48,12 @@ export class ProxyEngineFirefox {
 	}
 
 	public static updateFirefoxProxyConfig() {
-		let settings = Settings.current;
+		// let settings = Settings.current;
 		let proxySettings = {
 			proxyType: BrowserProxySettingsType.system
 		};
 
-		switch (settings.proxyMode) {
-			case ProxyModeType.Direct:
-			case ProxyModeType.SmartProxy:
-			case ProxyModeType.Always:
-				proxySettings.proxyType = BrowserProxySettingsType.none;
-				break;
-			case ProxyModeType.SystemProxy:
-				proxySettings.proxyType = BrowserProxySettingsType.system;
-				break;
-		}
+		proxySettings.proxyType = BrowserProxySettingsType.none;
 
 		PolyFill.browserSetProxySettings(
 			{
@@ -99,48 +90,37 @@ export class ProxyEngineFirefox {
 
 		let settings = Settings.current;
 
-		if (!requestDetails.url)
+		if (!requestDetails.url || requestDetails.url == 'localhost' || requestDetails.url == '127.0.0.1' )
 			return { type: "direct" };
 
 		// checking if request is special
-		let specialRequest = ProxyEngineSpecialRequests.getProxyMode(requestDetails.url, true);
-		if (specialRequest !== null) {
-			if (specialRequest.applyMode == SpecialRequestApplyProxyMode.NoProxy)
-				return { type: "direct" };
+		// let specialRequest = ProxyEngineSpecialRequests.getProxyMode(requestDetails.url, true);
+		// if (specialRequest !== null) {
+		// 	if (specialRequest.applyMode == SpecialRequestApplyProxyMode.NoProxy)
+		// 		return { type: "direct" };
 
-			if (specialRequest.applyMode == SpecialRequestApplyProxyMode.CurrentProxy) {
-				if (settings.activeProxyServer)
-					return ProxyEngineFirefox.getResultProxyInfo(settings.activeProxyServer);
-				else
-					return { type: "direct" };
-			}
+		// 	if (specialRequest.applyMode == SpecialRequestApplyProxyMode.CurrentProxy) {
+		// 		if (settings.activeProxyServer)
+		// 			return ProxyEngineFirefox.getResultProxyInfo(settings.activeProxyServer);
+		// 		else
+		// 			return { type: "direct" };
+		// 	}
 
-			if (specialRequest.applyMode == SpecialRequestApplyProxyMode.SelectedProxy
-				&& specialRequest.selectedProxy) {
-				return ProxyEngineFirefox.getResultProxyInfo(specialRequest.selectedProxy);
-			}
-		}
+		// 	if (specialRequest.applyMode == SpecialRequestApplyProxyMode.SelectedProxy
+		// 		&& specialRequest.selectedProxy) {
+		// 		return ProxyEngineFirefox.getResultProxyInfo(specialRequest.selectedProxy);
+		// 	}
+		// }
 
-		if (settings.proxyMode == ProxyModeType.Direct ||
-			!settings.activeProxyServer)
+		if (settings.proxyMode == ProxyModeType.Direct)
 			return { type: "direct" };
 
-		if (settings.proxyMode == ProxyModeType.SystemProxy)
-			// system proxy mode is not handled here
-			return { type: "direct" };
+		
 
-		if (settings.proxyMode == ProxyModeType.Always) {
-			// should bypass this host?
-			if (settings.bypass.enableForAlways === true &&
-				settings.bypass.bypassList.length > 0) {
+		if (settings.proxyMode == ProxyModeType.Tor) {
+			
 
-				let host = new URL(requestDetails.url).host.toLowerCase();
-
-				if (settings.bypass.bypassList.indexOf(host) !== -1)
-					return { type: "direct" };
-			}
-
-			return ProxyEngineFirefox.getResultProxyInfo(settings.activeProxyServer);
+			return ProxyEngineFirefox.getResultTorProxy();
 		}
 
 		if (settings.options.proxyPerOrigin &&
@@ -149,91 +129,72 @@ export class ProxyEngineFirefox {
 			let tabData = TabManager.getTab(requestDetails.tabId);
 			if (tabData != null && tabData.proxified) {
 
-				if (tabData.proxyServerFromRule) {
-					if (tabData.proxyServerFromRule.username)
-						// Requires authentication. Mark as special and store authentication info.
-						ProxyEngineSpecialRequests.setSpecialUrl(`${tabData.proxyServerFromRule.host}:${tabData.proxyServerFromRule.port}`, null, tabData.proxyServerFromRule);
+				
 
-					return ProxyEngineFirefox.getResultProxyInfo(tabData.proxyServerFromRule);
-				}
-
-				return ProxyEngineFirefox.getResultProxyInfo(settings.activeProxyServer);
+				return ProxyEngineFirefox.getResultTorProxy();
 			}
 		}
 
-		let matchedRule = ProxyRules.findMatchForUrl(requestDetails.url);
-		if (matchedRule) {
-
-			if (requestDetails.tabId > -1) {
-				// storing the proxy & rule in tab
-				ProxyEngineFirefox.storeTabProxyDetail(requestDetails, matchedRule);
-			}
-
-			if (matchedRule.proxy) {
-				if (matchedRule.proxy.username)
-					// Requires authentication. Mark as special and store authentication info.
-					ProxyEngineSpecialRequests.setSpecialUrl(`${matchedRule.proxy.host}:${matchedRule.proxy.port}`, null, matchedRule.proxy);
-
-				return ProxyEngineFirefox.getResultProxyInfo(matchedRule.proxy);
-			}
-
-			return ProxyEngineFirefox.getResultProxyInfo(settings.activeProxyServer);
-		}
+		
 
 		// nothing matched
-		return { type: "direct" };
+		return ProxyEngineFirefox.getResultMassProxy();
 	}
 
-	private static storeTabProxyDetail(requestDetails: any, matchedRule: ProxyRule) {
-		// check if this is the top level request
-		if (requestDetails.type !== "main_frame") {
-			return;
-		}
+	// private static storeTabProxyDetail(requestDetails: any, matchedRule: ProxyRule) {
+	// 	// check if this is the top level request
+	// 	if (requestDetails.type !== "main_frame") {
+	// 		return;
+	// 	}
 
-		// tab is new, we need to create it
-		let tabData = TabManager.getOrSetTab(requestDetails.tabId, true, requestDetails.url);
-		if (tabData == null) {
-			// never
-			return;
-		}
+	// 	// tab is new, we need to create it
+	// 	let tabData = TabManager.getOrSetTab(requestDetails.tabId, true, requestDetails.url);
+	// 	if (tabData == null) {
+	// 		// never
+	// 		return;
+	// 	}
 
-		// only the top-level
-		if (requestDetails.url === tabData.url) {
+	// 	// only the top-level
+	// 	if (requestDetails.url === tabData.url) {
 
-			tabData.proxified = true;
-			tabData.proxySourceDomain = matchedRule.sourceDomain;
-			if (matchedRule.proxy)
-				tabData.proxyServerFromRule = matchedRule.proxy;
-			else
-				tabData.proxyServerFromRule = null;
-		}
-	}
+	// 		tabData.proxified = true;
+	// 		tabData.proxySourceDomain = matchedRule.sourceDomain;
+	// 		if (matchedRule.proxy)
+	// 			tabData.proxyServerFromRule = matchedRule.proxy;
+	// 		else
+	// 			tabData.proxyServerFromRule = null;
+	// 	}
+	// }
 
-	private static getResultProxyInfo(proxyServer: ProxyServer) {
-		switch (proxyServer.protocol) {
-			case "SOCKS5":
-				// "socks" refers to the SOCKS5 protocol
+	private static getResultTorProxy() {
+		
 				return {
 					type: "socks",
-					host: proxyServer.host,
-					port: proxyServer.port,
-					proxyDNS: proxyServer.proxyDNS,
-					username: proxyServer.username,
-					password: proxyServer.password
+					host: 'localhost',
+					port: Settings.TorPort,
+					proxyDNS: true,
+					username: '',
+					password: ''
 				};
 
-			default:
-			case "HTTP":
-			case "HTTPS":
-			case "SOCKS4":
-				return {
-					type: proxyServer.protocol,
-					host: proxyServer.host,
-					port: proxyServer.port,
-					proxyDNS: proxyServer.proxyDNS
-				};
-		}
+		
+		
 	}
+	private static getResultMassProxy() {
+		
+		return {
+			type: "socks",
+			host: 'localhost',
+			port: Settings.MassPort,
+			proxyDNS: true,
+			username: '',
+			password: ''
+		};
+
+
+
+}
+
 
 	private static onProxyError(error: Error) {
 		Debug.error(`Proxy error: ${error.message}`, error);
