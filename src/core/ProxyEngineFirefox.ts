@@ -17,7 +17,7 @@
 import { browser, environment } from "../lib/environment";
 import { Debug } from "../lib/Debug";
 import { ProxyModeType, BrowserProxySettingsType} from "./definitions"; //, ProxyRule, ProxyServer, SpecialRequestApplyProxyMode 
-//import { ProxyRules } from "./ProxyRules";
+import { ProxyRules } from "./ProxyRules";
 import { TabManager } from "./TabManager";
 import { PolyFill } from "../lib/PolyFill";
 import { Settings } from "./Settings";
@@ -123,16 +123,18 @@ export class ProxyEngineFirefox {
 			return ProxyEngineFirefox.getResultTorProxy();
 		}
 
-		if (settings.options.proxyPerOrigin &&
-			requestDetails.tabId > -1) {
+		if (settings.proxyMode == ProxyModeType.SmartProxy) {
 
 			let tabData = TabManager.getTab(requestDetails.tabId);
-			if (tabData != null && tabData.proxified) {
-
-				
-
+		
+			let matched = ProxyRules.findMatchForUrl(tabData.url);	
+			console.log("MMM",matched,requestDetails.url);
+			if (matched && matched.enabled)  {
 				return ProxyEngineFirefox.getResultTorProxy();
+
 			}
+			
+			return ProxyEngineFirefox.getResultMassProxy();
 		}
 
 		

@@ -209,6 +209,7 @@ export class popup {
     }
 
     private static populateProxyableDomainList(proxyableDomainList: ProxyableDomainType[]) {
+        
         if (!proxyableDomainList || !proxyableDomainList.length) return;
 
         var divProxyableContainer = jQuery("#divProxyableContainer");
@@ -236,7 +237,7 @@ export class popup {
             //item.data("hasMatchingRule", domainResult.hasMatchingRule);
 
             var itemIcon = item.find(".proxyable-status-icon");
-            if (domainResult.hasMatchingRule) {
+            if (domainResult.enabled) {
                 itemIcon.removeClass("fa-square")
                     .addClass("fa-check-square");
 
@@ -257,7 +258,7 @@ export class popup {
     }
 
     private static populateFailedRequests(failedRequests: FailedRequestType[]) {
-
+        return ;
         var divFailedRequests = jQuery("#divFailedRequests");
 
         if (failedRequests && failedRequests.length) {
@@ -395,7 +396,25 @@ export class popup {
         let domain = domainResult.domain;
         let hasMatchingRule = domainResult.hasMatchingRule;
         let ruleIsForThisHost = domainResult.ruleIsForThisHost;
+        console.log("ONTEST",hasMatchingRule,ruleIsForThisHost)
+        if (!hasMatchingRule) {
 
+        
+        PolyFill.runtimeSendMessage(
+            {
+                command: Messages.PopupAddDomainListToProxyRule,
+                domainList: [domain],
+                tabId: popup.popupData.currentTabId
+            },
+            (response: any) => {
+                if (!response) return;
+                if (response.failedRequests) {
+
+                    // display the failed requests
+                    popup.populateFailedRequests(response.failedRequests);
+                }
+            });
+        }
 
         if (!hasMatchingRule || (hasMatchingRule && ruleIsForThisHost == true)) {
             PolyFill.runtimeSendMessage(`proxyable-host-name: ${domain}`);

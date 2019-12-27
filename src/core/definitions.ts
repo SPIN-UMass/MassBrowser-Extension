@@ -132,7 +132,8 @@ export class FailedRequestType {
 export type ProxyableDomainType = {
 	domain: string,
 	hasMatchingRule: boolean,
-	ruleIsForThisHost: boolean
+	ruleIsForThisHost: boolean,
+	enabled: boolean
 }
 
 export type SettingsPageInternalDataType = {

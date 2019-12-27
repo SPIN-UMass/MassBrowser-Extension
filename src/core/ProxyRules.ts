@@ -31,7 +31,7 @@ export class ProxyRules {
 
 		// the domain should be the source
 		let rule = ProxyRules.getRuleBySource(domain);
-
+		console.log("TOGGLING",rule);
 		if (rule == null) {
 			if (!Utils.isValidHost(domain))
 				// this is an extra check!
@@ -39,7 +39,11 @@ export class ProxyRules {
 
 			ProxyRules.addRuleByDomain(domain);
 		} else {
-			ProxyRules.removeRule(rule);
+			console.log("TOGGLING",rule.enabled);
+			rule.enabled = ! rule.enabled;
+			console.log("TOGGLING2",rule.enabled);
+			rule = ProxyRules.getRuleBySource(domain);
+			console.log("TOGGLING3",rule.enabled);
 		}
 	}
 	public static enableByDomainList(domainList: string[]) {
@@ -209,7 +213,6 @@ export class ProxyRules {
 
 		try {
 			for (let rule of ProxyRules.compiledRulesList) {
-
 				switch (rule.ruleType) {
 					case ProxyRuleType.Exact:
 						if (lowerCaseUrl == null)
@@ -224,6 +227,7 @@ export class ProxyRules {
 
 						if (domainHost == null) {
 							let urlHost = Utils.extractHostFromUrl(url);
+							
 							if (urlHost == null) {
 								continue;
 							}
@@ -311,7 +315,8 @@ export class ProxyRules {
 		match: boolean,
 		domain: string,
 		sourceDomain: string,
-		ruleText: string
+		ruleText: string,
+		enabled: boolean
 	}[] {
 		let result = [];
 
@@ -336,7 +341,8 @@ export class ProxyRules {
 								match: true,
 								domain: domain,
 								sourceDomain: rule.sourceDomain,
-								ruleText: rule.rule
+								ruleText: rule.rule,
+								enabled: rule.enabled
 							});
 							matchFound = true;
 						}
@@ -358,7 +364,8 @@ export class ProxyRules {
 								domain: domain,
 								match: true,
 								sourceDomain: rule.sourceDomain,
-								ruleText: rule.rule
+								ruleText: rule.rule,
+								enabled: rule.enabled
 							});
 							matchFound = true;
 						}
@@ -372,7 +379,8 @@ export class ProxyRules {
 								domain: domain,
 								match: true,
 								sourceDomain: rule.sourceDomain,
-								ruleText: rule.rule
+								ruleText: rule.rule,
+								enabled: rule.enabled
 							});
 							matchFound = true;
 						}
@@ -386,7 +394,8 @@ export class ProxyRules {
 					domain: domain,
 					match: false,
 					sourceDomain: null,
-					ruleText: null
+					ruleText: null,
+					enabled: false
 				});
 			}
 		}

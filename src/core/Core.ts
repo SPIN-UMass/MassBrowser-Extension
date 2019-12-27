@@ -5,7 +5,7 @@
  * SmartProxy is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
  * published by the Free Software Foundation.
- *
+ *x
  * SmartProxy is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -612,6 +612,7 @@ export class Core {
 			let proxyableDomain = proxyableDomainList[0];
 			let testResult = ProxyRules.testSingleRule(proxyableDomain);
 			let ruleIsForThisHost = testResult.match;
+			let enabled = false;
 
 			if (testResult.match) {
 				// check to see if the matched rule is for this host or not!
@@ -619,34 +620,38 @@ export class Core {
 				if (testResult.rule.sourceDomain == proxyableDomain) {
 					ruleIsForThisHost = true;
 				}
+				enabled = testResult.rule.enabled;
 			}
 			// add the domain
 			dataForPopup.proxyableDomains.push({
 				domain: proxyableDomain,
 				hasMatchingRule: testResult.match,
-				ruleIsForThisHost: ruleIsForThisHost
+				ruleIsForThisHost: ruleIsForThisHost,
+				enabled: enabled
 			});
 
 		} else {
 
 			let multiTestResultList = ProxyRules.testMultipleRule(proxyableDomainList);
-
+			
 			for (let i = 0; i < multiTestResultList.length; i++) {
 				let result = multiTestResultList[i];
-
+				
 				let ruleIsForThisHost = false;
 				if (result.match) {
 					// check to see if the matched rule is for this host or not!
 					if (result.sourceDomain == proxyableDomainList[i]) {
 						ruleIsForThisHost = true;
 					}
+					
 				}
 
 				// add the domain
 				dataForPopup.proxyableDomains.push({
 					domain: result.domain,
 					hasMatchingRule: result.match,
-					ruleIsForThisHost: ruleIsForThisHost
+					ruleIsForThisHost: ruleIsForThisHost,
+					enabled: result.enabled
 				});
 			}
 		}
