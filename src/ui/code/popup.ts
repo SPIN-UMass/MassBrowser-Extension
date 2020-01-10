@@ -237,6 +237,8 @@ export class popup {
             //item.data("hasMatchingRule", domainResult.hasMatchingRule);
 
             var itemIcon = item.find(".proxyable-status-icon");
+            console.log(domainResult)
+            
             if (domainResult.enabled) {
                 itemIcon.removeClass("fa-square")
                     .addClass("fa-check-square");
@@ -425,6 +427,7 @@ export class popup {
             });
 
             popup.closeSelf();
+            
         } else {
             PolyFill.runtimeSendMessage(`rule is not for this domain: ${domain}`);
         }

@@ -169,41 +169,40 @@ export class settingsPage {
 
         let dataTableCustomDom = '<t><"row"<"col-sm-12 col-md-5"<"text-left float-left"f>><"col-sm-12 col-md-7"<"text-right"l>>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>';
 
-        settingsPage.grdServers = jQuery("#grdServers").DataTable({
-            "dom": dataTableCustomDom,
-            paging: true,
-            select: true,
-            scrollY: 300,
-            responsive: true,
-            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            columns: [
-                {
-                    name: "name", data: "name", title: browser.i18n.getMessage("settingsServersGridColName")
-                },
-                {
-                    name: "protocol", data: "protocol", title: browser.i18n.getMessage("settingsServersGridColProtocol"),
-                },
-                {
-                    name: "host", data: "host", title: browser.i18n.getMessage("settingsServersGridColServer"),
-                },
-                {
-                    name: "port", data: "port", type: "num", title: browser.i18n.getMessage("settingsServersGridColPort"),
-                },
-                {
-                    "data": null,
-                    "defaultContent": "<button class='btn btn-sm btn-success' id='btnServersEdit'>Edit</button> <button class='btn btn-sm btn-danger' id='btnServersRemove'><i class='fas fa-times'></button>",
-                }
-            ],
-        });
-        settingsPage.grdServers.on('responsive-display',
-            function (e, dataTable, row, showHide, update) {
-                let rowChild = row.child();
-                if (showHide && rowChild && rowChild.length)
-                    settingsPage.refreshServersGridRowElement(rowChild[0]);
-            }
-        );
-        settingsPage.grdServers.draw();
-
+        // settingsPage.grdServers = jQuery("#grdServers").DataTable({
+        //     "dom": dataTableCustomDom,
+        //     paging: true,
+        //     select: true,
+        //     scrollY: 300,
+        //     responsive: true,
+        //     lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        //     columns: [
+        //         {
+        //             name: "name", data: "name", title: browser.i18n.getMessage("settingsServersGridColName")
+        //         },
+        //         {
+        //             name: "protocol", data: "protocol", title: browser.i18n.getMessage("settingsServersGridColProtocol"),
+        //         },
+        //         {
+        //             name: "host", data: "host", title: browser.i18n.getMessage("settingsServersGridColServer"),
+        //         },
+        //         {
+        //             name: "port", data: "port", type: "num", title: browser.i18n.getMessage("settingsServersGridColPort"),
+        //         },
+        //         {
+        //             "data": null,
+        //             "defaultContent": "<button class='btn btn-sm btn-success' id='btnServersEdit'>Edit</button> <button class='btn btn-sm btn-danger' id='btnServersRemove'><i class='fas fa-times'></button>",
+        //         }
+        //     ],
+        // });
+        // settingsPage.grdServers.on('responsive-display',
+        //     function (e, dataTable, row, showHide, update) {
+        //         let rowChild = row.child();
+        //         if (showHide && rowChild && rowChild.length)
+        //             settingsPage.refreshServersGridRowElement(rowChild[0]);
+        //     }
+        // );
+        // settingsPage.grdServers.draw();
         settingsPage.grdRules = jQuery("#grdRules").DataTable({
             "dom": dataTableCustomDom,
             paging: true,
@@ -213,9 +212,6 @@ export class settingsPage {
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
             columns: [
                 {
-                    name: "ruleType", data: "ruleTypeName", title: browser.i18n.getMessage("settingsRulesGridColRuleType")
-                },
-                {
                     name: "sourceDomain", data: "sourceDomain", title: browser.i18n.getMessage("settingsRulesGridColSource")
                 },
                 {
@@ -223,10 +219,6 @@ export class settingsPage {
                 },
                 {
                     name: "enabled", data: "enabled", title: browser.i18n.getMessage("settingsRulesGridColEnabled")
-                },
-                {
-                    name: "proxy", data: "proxyName", title: browser.i18n.getMessage("settingsRulesGridColProxy"),
-                    defaultContent: browser.i18n.getMessage("settingsRulesProxyDefault")
                 },
                 {
                     width: "70px",
@@ -244,62 +236,23 @@ export class settingsPage {
         );
         settingsPage.grdRules.draw();
 
-        settingsPage.grdServerSubscriptions = jQuery("#grdServerSubscriptions").DataTable({
-            "dom": dataTableCustomDom,
-            paging: true,
-            select: true,
-            scrollY: 300,
-            responsive: true,
-            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            columns: [
-                {
-                    name: "name", data: "name", title: browser.i18n.getMessage("settingsServerSubscriptionsGridColName")
-                },
-                {
-                    name: "url", data: "url", title: browser.i18n.getMessage("settingsServerSubscriptionsGridColUrl")
-                },
-                {
-                    name: "totalCount", data: "totalCount", type: "num", title: browser.i18n.getMessage("settingsServerSubscriptionsGridColCount")
-                },
-                {
-                    name: "enabled", data: "enabled", title: browser.i18n.getMessage("settingsServerSubscriptionsGridColEnabled"),
-                },
-                {
-                    "data": null,
-                    "defaultContent": "<button class='btn btn-sm btn-success' id='btnSubscriptionsEdit'>Edit</button> <button class='btn btn-sm btn-danger' id='btnSubscriptionsRemove'><i class='fas fa-times'></button>",
-                }
-            ],
-        });
-        settingsPage.grdServerSubscriptions.on('responsive-display',
-            function (e, dataTable, row, showHide, update) {
-                let rowChild = row.child();
-                if (showHide && rowChild && rowChild.length)
-                    settingsPage.refreshServerSubscriptionsGridRowElement(rowChild[0]);
-            }
-        );
-        settingsPage.grdServerSubscriptions.draw();
-
+       
+        
+        
         if (settingsPage.currentSettings) {
-            if (settingsPage.currentSettings.proxyServers)
-                settingsPage.loadServers(settingsPage.currentSettings.proxyServers);
-
+            
             if (settingsPage.currentSettings.proxyRules)
                 settingsPage.loadRules(settingsPage.currentSettings.proxyRules);
 
-            if (settingsPage.currentSettings.proxyServerSubscriptions)
-                settingsPage.loadServerSubscriptions(settingsPage.currentSettings.proxyServerSubscriptions);
+
         }
         else {
-            settingsPage.loadServers([]);
             settingsPage.loadRules([]);
-            settingsPage.loadServerSubscriptions([]);
         }
 
         jQuery("#tabSettings").on('shown.bs.tab', (e: any) => {
             // DataTables columns are not adjusted when hidden, needs to be done manually
-            settingsPage.grdServers.columns.adjust().draw();
             settingsPage.grdRules.columns.adjust().draw();
-            settingsPage.grdServerSubscriptions.columns.adjust().draw();
         });
     }
 
@@ -400,7 +353,7 @@ export class settingsPage {
     }
 
     /** Used for ActiveProxy and ... */
-    private static populateProxyServersToComboBox(comboBox: any, selectedProxyName?: string, proxyServers?: ProxyServer[], serverSubscriptions?: any[], dontIncludeAuthServers?: boolean) {
+    private static populateProxyServersToComboBox(comboBox: any, selectedProxyName?: string, proxyServers?: ProxyServer[], serverSubscriptions?: any[], _dontIncludeAuthServers?: boolean) {
         if (!comboBox) return;
         if (!proxyServers)
             proxyServers = settingsPage.readServers();
@@ -412,7 +365,7 @@ export class settingsPage {
         // adding select options
         proxyServers.forEach((proxyServer: ProxyServer) => {
 
-            if (dontIncludeAuthServers && proxyServer.username)
+            if (_dontIncludeAuthServers && proxyServer.username)
                 // exit loop
                 return;
 
@@ -444,7 +397,7 @@ export class settingsPage {
 
                 for (let proxyServer of subscription.proxies) {
 
-                    if (dontIncludeAuthServers && proxyServer.username)
+                    if (_dontIncludeAuthServers && proxyServer.username)
                         // exit loop
                         return;
 
@@ -468,11 +421,7 @@ export class settingsPage {
             }
         }
 
-        if (!hasSelectedItem) {
-            // first item
-            comboBox[0].selectedIndex = 0;
-            comboBox.trigger("change");
-        }
+        // \
     }
 
     private static populateServerModal(modalContainer: any, server?: ProxyServer) {
@@ -524,9 +473,9 @@ export class settingsPage {
             .text(browser.i18n.getMessage("settingsRulesProxyDefault"))
             .appendTo(cmdRuleProxyServer);
 
-        let dontIncludeAuthServers = false;
+        let _dontIncludeAuthServers = false;
         if (environment.chrome)
-            dontIncludeAuthServers = true;
+            _dontIncludeAuthServers = true;
 
         if (proxyRule) {
 
@@ -539,11 +488,11 @@ export class settingsPage {
             modalContainer.find("#txtRuleUrlExact").val(proxyRule.ruleExact);
             modalContainer.find("#chkRuleEnabled").prop('checked', proxyRule.enabled);
 
-            let proxyServerName = null;
-            if (proxyRule.proxy)
-                proxyServerName = proxyRule.proxy.name;
+            // let proxyServerName = null;
+            // if (proxyRule.proxy)
+            //     proxyServerName = proxyRule.proxy.name;
 
-            settingsPage.populateProxyServersToComboBox(cmdRuleProxyServer, proxyServerName, null, null, dontIncludeAuthServers);
+            //settingsPage.populateProxyServersToComboBox(cmdRuleProxyServer, proxyServerName, null, null, _dontIncludeAuthServers);
 
         } else {
 
@@ -556,7 +505,7 @@ export class settingsPage {
             modalContainer.find("#txtRuleUrlExact").val("");
             modalContainer.find("#chkRuleEnabled").prop('checked', true);
 
-            settingsPage.populateProxyServersToComboBox(cmdRuleProxyServer, null, null, null, dontIncludeAuthServers);
+            //settingsPage.populateProxyServersToComboBox(cmdRuleProxyServer, null, null, null, _dontIncludeAuthServers);
         }
 
         settingsPage.updateProxyRuleModal();
@@ -818,14 +767,14 @@ export class settingsPage {
         rowElement.find("#btnServersEdit").on("click", settingsPage.uiEvents.onServersEditClick);
     }
 
-    private static refreshServersGridRowElement(rowElement: any, invalidate?: boolean) {
-        if (!rowElement)
-            return;
-        rowElement = jQuery(rowElement);
+    // private static refreshServersGridRowElement(rowElement: any, invalidate?: boolean) {
+    //     if (!rowElement)
+    //         return;
+    //     rowElement = jQuery(rowElement);
 
-        rowElement.find("#btnServersRemove").on("click", settingsPage.uiEvents.onServersRemoveClick);
-        rowElement.find("#btnServersEdit").on("click", settingsPage.uiEvents.onServersEditClick);
-    }
+    //     rowElement.find("#btnServersRemove").on("click", settingsPage.uiEvents.onServersRemoveClick);
+    //     rowElement.find("#btnServersEdit").on("click", settingsPage.uiEvents.onServersEditClick);
+    // }
 
     private static refreshServersGridAllRows() {
         var nodes = this.grdServers.rows().nodes();
@@ -891,12 +840,15 @@ export class settingsPage {
     //#region Rules tab functions ------------------------------
 
     private static loadRules(rules: ProxyRule[]) {
+
         if (!this.grdRules)
             return;
         this.grdRules.clear();
 
         // prototype needed
+        console.log(rules);
         let fixedRules = ProxyRule.assignArray(rules);
+        console.log("MM", fixedRules);
         this.grdRules.rows.add(fixedRules).draw('full-hold');
 
         // binding the events for all the rows
@@ -2293,5 +2245,5 @@ export class settingsPage {
     //#endregion
 
 }
-
+console.log("I AM HERERE");
 settingsPage.initialize();
