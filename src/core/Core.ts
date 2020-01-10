@@ -261,7 +261,7 @@ export class Core {
 						return;
 					Settings.current.options = message.options;
 					SettingsOperation.saveOptions();
-					SettingsOperation.saveAllSync();
+					//SettingsOperation.saveAllSync();
 
 					// update proxy rules
 					ProxyEngine.notifySettingsOptionsChanged();
