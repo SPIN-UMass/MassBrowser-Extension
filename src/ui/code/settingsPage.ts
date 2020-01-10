@@ -70,10 +70,7 @@ export class settingsPage {
         this.populateSettingsUiData(settingsData);
 
         this.loadRules(this.currentSettings.proxyRules);
-        this.loadServers(this.currentSettings.proxyServers);
-        this.loadServerSubscriptions(this.currentSettings.proxyServerSubscriptions);
-        this.loadActiveProxyServer(this.currentSettings.proxyServers, this.currentSettings.proxyServerSubscriptions);
-        this.loadBypass(this.currentSettings.bypass);
+        
         this.loadGeneralOptions(this.currentSettings.options);
 
         // make copy
@@ -634,20 +631,11 @@ export class settingsPage {
         if (!options)
             return;
         let divGeneral = jQuery("#tab-general");
-
-        divGeneral.find("#chkProxyPerOrigin").prop("checked", options.proxyPerOrigin || false);
-
-        divGeneral.find("#chkSyncSettings").prop("checked", options.syncSettings || false);
-        divGeneral.find("#chkSyncProxyMode").prop("checked", options.syncProxyMode || false);
-        divGeneral.find("#chkSyncActiveProxy").prop("checked", options.syncActiveProxy || false);
-
-        divGeneral.find("#chkDetectRequestFailures").prop("checked", options.detectRequestFailures || false);
-        divGeneral.find("#chkDisplayFailedOnBadge").prop("checked", options.displayFailedOnBadge || false);
-
-        divGeneral.find("#chkEnableShortcuts").prop("checked", options.enableShortcuts || false);
-        divGeneral.find("#chkShortcutNotification").prop("checked", options.shortcutNotification || false);
-        divGeneral.find("#chkDisplayAppliedProxyOnBadge").prop("checked", options.displayAppliedProxyOnBadge || false);
-
+        console.log(options.MassPort);
+        divGeneral.find('#mass-port')[0].value = options.MassPort;
+        divGeneral.find('#tor-port')[0].value = options.TorPort;
+        divGeneral.find('#counter-sel')[0].selectedIndex = options.country;
+        
         // this is needed to enabled/disable syn check boxes based on settings
         settingsPage.uiEvents.onSyncSettingsChanged();
 

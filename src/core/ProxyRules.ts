@@ -44,6 +44,9 @@ export class ProxyRules {
 			console.log("TOGGLING2",rule.enabled);
 			rule = ProxyRules.getRuleBySource(domain);
 			console.log("TOGGLING3",rule.enabled);
+			ProxyRules.compileRules(Settings.current.proxyRules);
+			rule = ProxyRules.getRuleBySource(domain);
+			console.log("TOGGLING4",rule.enabled);
 		}
 	}
 	public static enableByDomainList(domainList: string[]) {

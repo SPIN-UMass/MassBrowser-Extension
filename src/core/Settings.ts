@@ -28,8 +28,7 @@ export class Settings {
 	public static currentOptionsSyncSettings: boolean = true;
 
 	public static onInitialized: Function = null;
-	public static TorPort: number  = 7081;
-	public static MassPort: number  = 7080;
+	
 
 	public static initialize() {
 		Settings.current = new SettingsConfig();

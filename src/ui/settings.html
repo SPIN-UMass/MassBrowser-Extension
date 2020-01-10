@@ -72,13 +72,14 @@
 
 							<label class="ml-2 mr-2">
 								<div class="country-group  form-inline">
-									<label for="sel1">Country: </label>
-									<select class="form-control" id="sel1">
+									<label for="country-sel">Country: </label>
+									<select class="form-control" id="counter-sel">
+										<option>Not Listed</option>
 										<option>China</option>
 										<option>Iran</option>
 										<option>Syria</option>
 										<option>Turkey</option>
-										<option>Other</option>
+										
 									</select>
 								</div>
 							</label>
@@ -86,24 +87,24 @@
 						</div>
 						<div>
 							<hr class="afshin-line" />
-							<h3 data-localize="settingsGeneraladavane">Advance Settings </h3><small id="red">test</small>
+							<h3 data-localize="settingsGeneraladavane">Advance Settings </h3>
 							
 							<div class="float-left">
 								<div class="container">
 									<div class="row">
-										<div class="col">
+										<div class="col-sm-6">
 											Massbrowser Main Port
 										</div>
-										<div class="col">
-											<input value="7080" />
+										<div class="col-sm-6">
+											<input id="mass-port" />
 										</div>
 									</div>
 									<div class="row">
-										<div class="col">
+										<div class="col-sm-6">
 											Massbrowser Secondary Port
 										</div>
-										<div class="col">
-												<input value="7081" />
+										<div class="col-sm-6">
+												<input id="tor-port" />
 										</div>
 									</div>
 								</div>
@@ -144,7 +145,7 @@
 							</a> and <a href='https://en.wikipedia.org/wiki/Regular_expression' target='_blank'>Regular
 								expressions</a>.
 						</p>
-						<p>
+						<!--<p>
 							<div class="float-left">
 								<button id="btnAddProxyRule" class="btn btn-info"
 									data-localize="settingsAddRuleButton">Add Rule</button>
@@ -160,7 +161,7 @@
 								</button>
 							</div>
 							<div class="clearfix"></div>
-						</p>
+						</p>-->
 						<table id="grdRules" class="table table-striped table-bordered table-hover"></table>
 
 						<p class="mt-2">

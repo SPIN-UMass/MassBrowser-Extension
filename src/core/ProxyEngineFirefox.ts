@@ -173,7 +173,7 @@ export class ProxyEngineFirefox {
 				return {
 					type: "socks",
 					host: 'localhost',
-					port: Settings.TorPort,
+					port: Settings.current.options.TorPort,
 					proxyDNS: true,
 					username: '',
 					password: ''
@@ -187,7 +187,7 @@ export class ProxyEngineFirefox {
 		return {
 			type: "socks",
 			host: 'localhost',
-			port: Settings.MassPort,
+			port: Settings.current.options.MassPort,
 			proxyDNS: true,
 			username: '',
 			password: ''

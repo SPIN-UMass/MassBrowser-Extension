@@ -169,6 +169,7 @@ export class SettingsConfig {
 	public proxyServerSubscriptions: ProxyServerSubscription[] = [];
 	public options: GeneralOptions;
 	public bypass: BypassOptions;
+
 }
 export class GeneralOptions implements Cloneable {
 	public syncSettings: boolean = false;
@@ -180,7 +181,11 @@ export class GeneralOptions implements Cloneable {
 	public displayAppliedProxyOnBadge: boolean = true;
 	public proxyPerOrigin: boolean = true;
 	public enableShortcuts: boolean = true;
+
 	public shortcutNotification: boolean = true;
+	public TorPort: number  = 7081;
+	public MassPort: number  = 7080;
+	public country: number = 0;
 
 	CopyFrom(source: any) {
 		if (source["syncSettings"] != null)
