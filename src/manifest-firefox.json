@@ -7,11 +7,11 @@
 	"homepage_url": "http://massbowser.cs.umass.edu",
 	"default_locale": "en",
 	"icons": {
-		"16": "icons/smartproxy-16.png",
-		"24": "icons/smartproxy-24.png",
-		"48": "icons/smartproxy-48.png",
-		"96": "icons/smartproxy-96.png",
-		"128": "icons/smartproxy-128.png"
+		"16": "icons/mb-16.png",
+		"24": "icons/mb-24.png",
+		"48": "icons/mb-48.png",
+		"96": "icons/mb-96.png",
+		"128": "icons/mb-128.png"
 	},
 	"permissions": [
 		"<all_urls>",
@@ -29,11 +29,11 @@
 		"default_title": "__MSG_extensionName__",
 		"default_popup": "ui/popup.html",
 		"default_icon": {
-			"16": "icons/smartproxy-16.png",
-			"24": "icons/smartproxy-24.png",
-			"48": "icons/smartproxy-48.png",
-			"96": "icons/smartproxy-96.png",
-			"128": "icons/smartproxy-128.png"
+			"16": "icons/mb-16.png",
+			"24": "icons/mb-24.png",
+			"48": "icons/mb-48.png",
+			"96": "icons/mb-96.png",
+			"128": "icons/mb-128.png"
 		}
 	},
 	"background": {

@@ -685,9 +685,9 @@ export class Core {
 				proxyTitle = `${extensionName} : ${browser.i18n.getMessage("popupNoProxy")}`;
 				PolyFill.browserActionSetIcon({
 					path: {
-						16: "icons/proxymode-disabled-16.png",
-						32: "icons/proxymode-disabled-32.png",
-						48: "icons/proxymode-disabled-48.png"
+						16: "icons/mb-black-16.png",
+						32: "icons/mb-black-32.png",
+						48: "icons/mb-black-48.png"
 					}
 				});
 				break;
@@ -700,10 +700,10 @@ export class Core {
 				proxyTitle = `${extensionName} : ${browser.i18n.getMessage("popupSmartProxy")}`;
 				PolyFill.browserActionSetIcon({
 					path: {
-						16: "icons/smartproxy-16.png",
-						24: "icons/smartproxy-24.png",
-						48: "icons/smartproxy-48.png",
-						96: "icons/smartproxy-96.png"
+						16: "icons/mb-16.png",
+						24: "icons/mb-24.png",
+						48: "icons/mb-48.png",
+						96: "icons/mb-96.png"
 					}
 				});
 				break;
