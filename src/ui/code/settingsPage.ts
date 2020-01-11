@@ -487,7 +487,7 @@ export class settingsPage {
         if (!this.grdRules)
             return;
         this.grdRules.clear();
-
+        console.log("MAS",rules);
         // prototype needed
         console.log(rules);
         let fixedRules = ProxyRule.assignArray(rules);
@@ -532,6 +532,7 @@ export class settingsPage {
 
     private static refreshRulesGrid() {
         let currentRow = this.grdRules.row('.selected');
+        console.log("ROW",currentRow);
         if (currentRow)
             // displaying the possible data change
             settingsPage.refreshRulesGridRow(currentRow, true);
@@ -544,7 +545,7 @@ export class settingsPage {
             return;
         if (invalidate)
             row.invalidate();
-
+        console.log("I AM HERE")
         let rowElement = jQuery(row.node());
 
         // NOTE: to display update data the row should be invalidated
@@ -565,11 +566,19 @@ export class settingsPage {
         rowElement.find("#btnRulesEdit").on("click", settingsPage.uiEvents.onRulesEditClick);
     }
 
-    private static refreshRulesGridAllRows() {
+    private static refreshRulesGridAllRows(invalidated?: any) {
+        console.log(this.grdRules.rows().nodes());
         var nodes = this.grdRules.rows().nodes();
+        console.log("MMM!@#",nodes);
         for (let index = 0; index < nodes.length; index++) {
-            const rowElement = jQuery(nodes[index]);
+            let row = nodes[index];
+            console.log("I AM HERE 2",row);
+            
+            if (invalidated)
+                this.grdRules.rows(row).invalidate();
 
+            let rowElement = jQuery(row);
+            
             rowElement.find("#btnRulesRemove").on("click", settingsPage.uiEvents.onRulesRemoveClick);
             rowElement.find("#btnRulesEdit").on("click", settingsPage.uiEvents.onRulesEditClick);
         }
@@ -766,12 +775,70 @@ export class settingsPage {
         onChangeRuleType() {
             settingsPage.updateProxyRuleModal();
         },
+        onRulesEditClick(e: any) {
+            let item = settingsPage.readSelectedRule(e);
+            if (!item)
+                return;
+
+            let modal = jQuery("#modalModifyRule");
+            modal.data("editing", item);
+
+            settingsPage.populateRuleModal(modal, item);
+
+            modal.modal("show");
+            modal.find("#txtRuleSource").focus();
+        },
+        onRulesRemoveClick(e: any) {
+            var row = settingsPage.readSelectedRuleRow(e);
+            if (!row)
+                return;
+
+            messageBox.confirm(browser.i18n.getMessage("settingsConfirmRemoveProxyRule"),
+                () => {
+
+                    // remove then redraw the grid page
+                    row.remove().draw('full-hold');
+
+                    settingsPage.changeTracking.rules = true;
+                });
+        },
+        onClickSaveProxyRules() {
+
+            let rules = settingsPage.readRules();
+
+            PolyFill.runtimeSendMessage(
+                {
+                    command: Messages.SettingsPageSaveProxyRules,
+                    proxyRules: rules
+                },
+                (response: ResultHolder) => {
+                    if (!response) return;
+                    if (response.success) {
+                        if (response.message)
+                            messageBox.success(response.message);
+
+                        // current rules should become equal to saved rules
+                        settingsPage.currentSettings.proxyRules = rules;
+
+                        settingsPage.changeTracking.rules = false;
+
+                    } else {
+                        if (response.message)
+                            messageBox.error(response.message);
+                    }
+                },
+                (error: Error) => {
+                    messageBox.error(browser.i18n.getMessage("settingsErrorFailedToSaveRules") + " " + error.message);
+                });
+        },
         onClickSubmitProxyRule() {
 
             let modal = jQuery("#modalModifyRule");
             let editingModel = modal.data("editing");
 
             let ruleInfo = settingsPage.readProxyRuleModel(modal);
+            
+            console.log(ruleInfo);
 
             let sourceDomain = ruleInfo.sourceDomain;
             if (!sourceDomain) {
@@ -888,7 +955,8 @@ export class settingsPage {
                 }
             }
             else {
-                if (!Utils.isValidUrl(ruleInfo.ruleExact)) {
+                
+                if (!ruleInfo.rulePattern.includes(sourceDomain)) {
                     messageBox.error(
                         browser.i18n.getMessage("settingsRuleExactUrlInvalid").replace("{0}", ruleInfo.ruleExact)
                     );
@@ -910,11 +978,11 @@ export class settingsPage {
                 messageBox.error(browser.i18n.getMessage("settingsRuleSourceAlreadyExists"));
                 return;
             }
-
+            
             if (editingModel) {
                 jQuery.extend(editingModel, ruleInfo);
-
-                settingsPage.refreshRulesGrid();
+                console.log('error',editingModel,ruleInfo);
+                settingsPage.refreshRulesGridAllRows(true);
 
             } else {
 
@@ -922,65 +990,14 @@ export class settingsPage {
                 settingsPage.insertNewRuleInGrid(ruleInfo);
             }
 
-            settingsPage.changeTracking.rules = true;
+            
 
             modal.modal("hide");
-        },
-        onRulesEditClick(e: any) {
-            let item = settingsPage.readSelectedRule(e);
-            if (!item)
-                return;
+            settingsPage.uiEvents.onClickSaveProxyRules();
+            
+            //settingsPage.loadRules(settingsPage.currentSettings.proxyRules);
+            //settingsPage.refreshRulesGridAllRows();
 
-            let modal = jQuery("#modalModifyRule");
-            modal.data("editing", item);
-
-            settingsPage.populateRuleModal(modal, item);
-
-            modal.modal("show");
-            modal.find("#txtRuleSource").focus();
-        },
-        onRulesRemoveClick(e: any) {
-            var row = settingsPage.readSelectedRuleRow(e);
-            if (!row)
-                return;
-
-            messageBox.confirm(browser.i18n.getMessage("settingsConfirmRemoveProxyRule"),
-                () => {
-
-                    // remove then redraw the grid page
-                    row.remove().draw('full-hold');
-
-                    settingsPage.changeTracking.rules = true;
-                });
-        },
-        onClickSaveProxyRules() {
-
-            let rules = settingsPage.readRules();
-
-            PolyFill.runtimeSendMessage(
-                {
-                    command: Messages.SettingsPageSaveProxyRules,
-                    proxyRules: rules
-                },
-                (response: ResultHolder) => {
-                    if (!response) return;
-                    if (response.success) {
-                        if (response.message)
-                            messageBox.success(response.message);
-
-                        // current rules should become equal to saved rules
-                        settingsPage.currentSettings.proxyRules = rules;
-
-                        settingsPage.changeTracking.rules = false;
-
-                    } else {
-                        if (response.message)
-                            messageBox.error(response.message);
-                    }
-                },
-                (error: Error) => {
-                    messageBox.error(browser.i18n.getMessage("settingsErrorFailedToSaveRules") + " " + error.message);
-                });
         },
         onClickRejectProxyRules() {
             // reset the data
