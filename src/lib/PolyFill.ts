@@ -215,6 +215,7 @@ export class PolyFill {
 		}
 	}
 	public static storageSyncGet(keys: any, success?: Function, fail?: Function) {
+
 		if (environment.chrome) {
 			chrome.storage.sync.get(keys,
 				(response: any) => {
@@ -226,8 +227,9 @@ export class PolyFill {
 					}
 				});
 		} else {
-			browser.storage.sync.get(keys)
-				.then(success, fail);
+			success(null);
+			// browser.storage.sync.get(keys)
+			// 	.then(success, fail);
 		}
 	}
 	public static storageSyncSet(items: any, success?: Function, fail?: Function) {
@@ -242,8 +244,8 @@ export class PolyFill {
 					}
 				});
 		} else {
-			browser.storage.sync.set(items)
-				.then(success, fail);
+			// browser.storage.sync.set(items)
+			// 	.then(success, fail);
 		}
 	}
 	public static runtimeGetBrowserInfo(success: Function, fail?: Function) {
