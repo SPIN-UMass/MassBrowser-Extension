@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with SmartProxy.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+ const MB_REPORT_URL = "http://localhost:6423/report";
 import { browser, environment } from "../../lib/environment";
 import { jQuery } from "../../lib/External";
 import { Messages, PopupInternalDataType, ProxyModeType, ProxyableDomainType, FailedRequestType, ProxyServer } from "../../core/definitions";
@@ -87,6 +89,7 @@ export class popup {
             PolyFill.runtimeOpenOptionsPage();
             popup.closeSelf();
         });
+        
         jQuery("#openProxyable").click(() => {
             if (!popup.popupData)
                 return;
@@ -102,6 +105,31 @@ export class popup {
             popup.closeSelf();
         });
 
+        jQuery("#btnReport").click(()=>{
+            console.log(" I AM HERE ");
+            function onGot(tabInfo) {
+                console.log('Domain',tabInfo.url);
+                let domain = tabInfo.url;
+                jQuery.post(MB_REPORT_URL,{domain:domain},(res)=>{
+                    popup.closeSelf();    
+                });
+                
+
+              }
+              
+              function onError(error) {
+                console.log(`Error: ${error}`);
+              }
+              
+            
+            PolyFill.tabsGet(popup.popupData.currentTabId,onGot, onError);
+            // console.log("DOMAIN", domain,domainResult);
+            // let xhr = new XMLHttpRequest();
+            // xhr.open("POST",MB_REPORT_URL,true);
+            // xhr.send(domain);
+
+
+        })
         jQuery("#divFailedRequests a").click(() => {
             jQuery(".popup-menu-failed").toggle();
         });

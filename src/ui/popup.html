@@ -76,25 +76,6 @@
 				<a href="#" target="_blank">Update text</a>
 			</div>
 			<h6 class="text-muted text-center" data-localize="popupTitle">Massbrowser manager</h6>
-			<div id="divProxyMode" class="nav flex-column nav-pills interactive">
-				<!-- <a href="#" class="nav-link disabled px-5 text-center" data-localize="popupTitle">SmartProxy Activation</a> -->
-
-				<a href="#" data-proxyMode="1" class="nav-link active">
-					<i class="fas fa-lg text-success" aria-hidden="true"></i>
-					<span><img src="../icons/mb-16.png" /></span>  <span data-localize="popupSmartProxy">MassBrowsing</span>
-				</a>
-				<a href="#" data-proxyMode="2" class="nav-link">
-					<i class="fas  fa-lg text-primary" aria-hidden="true"></i>
-					<span data-localize="popupTor">Unblock everything</span>
-				</a>
-				<a href="#" data-proxyMode="0" class="nav-link">
-					<i class="fas fa-ban fa-lg text-danger" aria-hidden="true"></i>
-					<span data-localize="popupNoProxy">Direct (No Proxy)</span>
-				</a>
-
-				<!--<div class="dropdown-divider"></div>
-					<a href="#" class="nav-link active">Settings</a>-->
-			</div>
 			<div id="divFailedRequests" style="display: none">
 				<hr class="afshin-line" />
 				<ul class="nav flex-column nav-pills interactive direction-ltrXXX">
@@ -146,6 +127,37 @@
 					</li>
 				</ul>
 			</div>
+			<hr class="afshin-line" />
+			
+			<div id="divReport" class="nav flex-column nav-pills interactive">
+				<button id="btnReport"  class="btn btn-success btn-sm"> Report To Massbrowser </button>
+
+				
+			</div>
+
+
+			<hr class="afshin-line" />
+			<div id="divProxyMode" class="nav flex-column nav-pills interactive">
+				<!-- <a href="#" class="nav-link disabled px-5 text-center" data-localize="popupTitle">SmartProxy Activation</a> -->
+
+				<a href="#" data-proxyMode="1" class="nav-link active">
+					<i class="fas fa-lg text-success" aria-hidden="true"></i>
+					<span><img src="../icons/mb-16.png" /></span>  <span data-localize="popupSmartProxy">MassBrowsing</span>
+				</a>
+				<!-- <a href="#" data-proxyMode="2" class="nav-link">
+					<i class="fas  fa-lg text-primary" aria-hidden="true"></i>
+					<span data-localize="popupTor">Unblock everything</span>
+				</a> -->
+				<a href="#" data-proxyMode="0" class="nav-link">
+					<i class="fas fa-ban fa-lg text-danger" aria-hidden="true"></i>
+					<span data-localize="popupNoProxy">Direct (No Proxy)</span>
+				</a>
+
+				<!--<div class="dropdown-divider"></div>
+					<a href="#" class="nav-link active">Settings</a>-->
+			</div>
+
+
 			<hr class="afshin-line" />
 			<div class="nav flex-column nav-pills interactive">
 				<!-- <a href="#" style="display: noneX" id="openProxyable" class="nav-link">
