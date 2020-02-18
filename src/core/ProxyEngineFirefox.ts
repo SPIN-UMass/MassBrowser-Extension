@@ -128,7 +128,7 @@ export class ProxyEngineFirefox {
 			let tabData = TabManager.getTab(requestDetails.tabId);
 		
 			let matched = ProxyRules.findMatchForUrl(tabData.url);	
-			console.log("MMM",matched,requestDetails.url);
+			
 			if (matched && matched.enabled)  {
 				return ProxyEngineFirefox.getResultTorProxy();
 

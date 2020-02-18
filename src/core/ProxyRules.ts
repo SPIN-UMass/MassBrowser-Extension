@@ -36,7 +36,7 @@ export class ProxyRules {
 			if (!Utils.isValidHost(domain))
 				// this is an extra check!
 				return;
-
+			console.log("CREATING");
 			ProxyRules.addRuleByDomain(domain);
 		} else {
 			console.log("TOGGLING",rule.enabled);

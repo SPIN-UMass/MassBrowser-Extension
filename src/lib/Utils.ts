@@ -203,7 +203,7 @@ export class Utils {
 			return host;
 		}
 		catch (e) { 
-			console.log("EROROROROR",e);
+			
 			return null; }
 	}
 

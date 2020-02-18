@@ -104,6 +104,7 @@ export class popup {
             );
             popup.closeSelf();
         });
+        
 
         jQuery("#btnReport").click(()=>{
             console.log(" I AM HERE ");
@@ -251,13 +252,16 @@ export class popup {
         jQuery("#openProxyable").show();
 
         for (let i = 0; i < proxyableDomainList.length; i++) {
+
             let domainResult = proxyableDomainList[i];
             let domain = domainResult.domain;
+
 
             let item = divProxyableDomainItem.clone();
             item.show()
                 .find("span.proxyable-host-name")
                 .text(domain);
+
             item.appendTo(divProxyableDomain);
             item.data("domainResult", domainResult);
             //item.data("host-name", domain);
@@ -282,6 +286,23 @@ export class popup {
             }
 
             item.on("click", popup.onProxyableDomainClick);
+            if (i==0){ 
+
+                jQuery("#btnUnblock").click(()=>{
+                    console.log("CL")
+                    if (itemIcon.is(".fa-square")){
+                        console.log("CLICKING")
+                        item.click();
+
+
+
+                    }else{
+                        popup.closeSelf();
+                    }
+                    
+                });
+            }
+
 
             divProxyableDomainItem.hide();
         }
@@ -427,24 +448,24 @@ export class popup {
         let hasMatchingRule = domainResult.hasMatchingRule;
         let ruleIsForThisHost = domainResult.ruleIsForThisHost;
         console.log("ONTEST",hasMatchingRule,ruleIsForThisHost)
-        if (!hasMatchingRule) {
+        // if (!hasMatchingRule) {
 
         
-        PolyFill.runtimeSendMessage(
-            {
-                command: Messages.PopupAddDomainListToProxyRule,
-                domainList: [domain],
-                tabId: popup.popupData.currentTabId
-            },
-            (response: any) => {
-                if (!response) return;
-                if (response.failedRequests) {
+        // PolyFill.runtimeSendMessage(
+        //     {
+        //         command: Messages.PopupAddDomainListToProxyRule,
+        //         domainList: [domain],
+        //         tabId: popup.popupData.currentTabId
+        //     },
+        //     (response: any) => {
+        //         if (!response) return;
+        //         if (response.failedRequests) {
 
-                    // display the failed requests
-                    popup.populateFailedRequests(response.failedRequests);
-                }
-            });
-        }
+        //             // display the failed requests
+        //             popup.populateFailedRequests(response.failedRequests);
+        //         }
+        //     });
+        // }
 
         if (!hasMatchingRule || (hasMatchingRule && ruleIsForThisHost == true)) {
             PolyFill.runtimeSendMessage(`proxyable-host-name: ${domain}`);
@@ -454,11 +475,27 @@ export class popup {
                 domain: domain
             });
 
-            popup.closeSelf();
+            
             
         } else {
             PolyFill.runtimeSendMessage(`rule is not for this domain: ${domain}`);
         }
+        function onGot(tabInfo) {
+            popup.closeSelf();
+            
+            }
+            
+            function onError(error) {
+            console.log(`Error: ${error}`);
+            popup.closeSelf();
+
+            }
+            
+        
+        PolyFill.tabsReload(popup.popupData.currentTabId,onGot, onError);
+        
+        
+
     }
 
     private static onAddFailedRequestsClick() {
