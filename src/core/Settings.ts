@@ -99,7 +99,7 @@ export class Settings {
 			config.proxyServers = [];
 		}
 		if (config["proxyMode"] == null) {
-			config.proxyMode = ProxyModeType.Direct;
+			config.proxyMode = ProxyModeType.SmartProxy;
 		}
 		if (config["activeProxyServer"] == null) {
 			config.activeProxyServer = null;
@@ -113,7 +113,7 @@ export class Settings {
 		if (config["bypass"] == null) {
 			config.bypass = new BypassOptions();
 		}
-		config.product = "SmartProxy";
+		config.product = "Massbrowser Manager";
 
 		PolyFill.managementGetSelf((info: any) => {
 			config.version = info.version;
